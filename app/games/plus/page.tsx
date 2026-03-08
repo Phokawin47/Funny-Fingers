@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import WebcamCapture from "../../components/WebcamCapture";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
@@ -12,6 +12,8 @@ export default function PlusChallenge() {
     const [score, setScore] = useState(0);
     const [timeLeft, setTimeLeft] = useState(60);
     const [targetSum, setTargetSum] = useState(0);
+
+    const sfxRef = useRef<HTMLAudioElement | null>(null);
 
     // Tracking current detected fingers to prevent rapid re-triggering
     const [cooldown, setCooldown] = useState(false);
@@ -54,6 +56,12 @@ export default function PlusChallenge() {
             // Correct answer logic
             setScore((prev) => prev + 1);
 
+            // Play sound effect
+            if (sfxRef.current) {
+                sfxRef.current.currentTime = 0;
+                sfxRef.current.play().catch((err: any) => console.warn("SFX play failed:", err));
+            }
+
             // Wait 1.5s before showing next question to let user relax hands
             setTimeout(() => {
                 generateNewQuestion();
@@ -64,6 +72,8 @@ export default function PlusChallenge() {
 
     return (
         <div className="flex flex-col items-center w-full max-w-4xl mx-auto gap-8">
+            {/* Sound Effect Audio Element */}
+            <audio ref={sfxRef} src="/api/audio/get_point_sound.mp3" preload="auto" className="hidden" />
 
             <div className="w-full flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border">
                 <Link href="/" className="text-slate-500 hover:text-indigo-600 flex items-center gap-2 font-medium transition-colors">

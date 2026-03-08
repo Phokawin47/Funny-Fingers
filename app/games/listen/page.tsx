@@ -17,6 +17,7 @@ export default function ListeningChallenge() {
 
     const [cooldown, setCooldown] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const sfxRef = useRef<HTMLAudioElement | null>(null);
 
     const generateNewQuestion = useCallback(() => {
         // Generate numbers 0-55 where tens <= 5 and ones <= 5
@@ -83,6 +84,12 @@ export default function ListeningChallenge() {
             // Correct answer logic
             setScore((prev) => prev + 1);
 
+            // Play sound effect
+            if (sfxRef.current) {
+                sfxRef.current.currentTime = 0;
+                sfxRef.current.play().catch((err: any) => console.warn("SFX play failed:", err));
+            }
+
             // Wait 1.5s before showing next question to let user relax hands
             setTimeout(() => {
                 generateNewQuestion();
@@ -93,8 +100,9 @@ export default function ListeningChallenge() {
 
     return (
         <div className="flex flex-col items-center w-full max-w-4xl mx-auto gap-8">
-            {/* Hidden Audio Element */}
+            {/* Hidden Audio Elements */}
             <audio ref={audioRef} className="hidden" />
+            <audio ref={sfxRef} src="/api/audio/get_point_sound.mp3" preload="auto" className="hidden" />
 
             <div className="w-full flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border">
                 <Link href="/" className="text-slate-500 hover:text-pink-600 flex items-center gap-2 font-medium transition-colors">

@@ -21,9 +21,12 @@ export default function Leaderboard() {
         const fetchScores = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`/api/scores?gameType=${activeTab}`);
+                const API_URL = process.env.NEXT_PUBLIC_SCORE_API_URL || 'http://localhost:3001';
+                const res = await fetch(`${API_URL}/scores/top?gameType=${activeTab}`);
                 const json = await res.json();
-                if (json.success) {
+                if (Array.isArray(json)) {
+                    setScores(json);
+                } else if (json.success) {
                     setScores(json.data);
                 }
             } catch (error) {

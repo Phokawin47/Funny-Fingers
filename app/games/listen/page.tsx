@@ -37,8 +37,9 @@ export default function ListeningChallenge() {
     }, []);
 
     const playNumberAudio = (number: number) => {
+        const API_URL = process.env.NEXT_PUBLIC_AUDIO_API_URL || 'http://localhost:3002';
         // Fetch audio from our MongoDB GridFS API
-        const audioPath = `/api/audio/${number}.mp3`;
+        const audioPath = `${API_URL}/audio/${number}.mp3`;
 
         if (audioRef.current) {
             // Stop current playback before playing new one to prevent overlapping
@@ -102,7 +103,7 @@ export default function ListeningChallenge() {
         <div className="flex flex-col items-center w-full max-w-4xl mx-auto gap-8">
             {/* Hidden Audio Elements */}
             <audio ref={audioRef} className="hidden" />
-            <audio ref={sfxRef} src="/api/audio/get_point_sound.mp3" preload="auto" className="hidden" />
+            <audio ref={sfxRef} src={`${process.env.NEXT_PUBLIC_AUDIO_API_URL || 'http://localhost:3002'}/audio/SFXFiles/get_point_sound.mp3`} preload="auto" className="hidden" />
 
             <div className="w-full flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border">
                 <Link href="/" className="text-slate-500 hover:text-pink-600 flex items-center gap-2 font-medium transition-colors">

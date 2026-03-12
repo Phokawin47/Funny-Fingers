@@ -73,7 +73,7 @@ export default function PlusChallenge() {
     return (
         <div className="flex flex-col items-center w-full max-w-4xl mx-auto gap-8">
             {/* Sound Effect Audio Element */}
-            <audio ref={sfxRef} src="/api/audio/get_point_sound.mp3" preload="auto" className="hidden" />
+            <audio ref={sfxRef} src={`${process.env.NEXT_PUBLIC_AUDIO_API_URL || 'http://localhost:3002'}/audio/get_point_sound.mp3`} preload="auto" className="hidden" />
 
             <div className="w-full flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border">
                 <Link href="/" className="text-slate-500 hover:text-indigo-600 flex items-center gap-2 font-medium transition-colors">

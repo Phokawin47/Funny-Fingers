@@ -1,0 +1,39 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_SCORE_API_URL=${_NEXT_PUBLIC_SCORE_API_URL}'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_AUDIO_API_URL=${_NEXT_PUBLIC_AUDIO_API_URL}'
+      - '-t'
+      - '${_IMAGE_NAME}'
+      - '.'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - '${_IMAGE_NAME}'
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_SERVICE_NAME}'
+      - '--image'
+      - '${_IMAGE_NAME}'
+      - '--region'
+      - '${_REGION}'
+      - '--platform'
+      - 'managed'
+
+substitutions:
+  _SERVICE_NAME: funny-fingers-web
+  _REGION: asia-southeast1
+  _IMAGE_NAME: gcr.io/${PROJECT_ID}/${_SERVICE_NAME}
+  _NEXT_PUBLIC_SCORE_API_URL: https://se4ai-score-api-1049366523390.europe-west1.run.app
+  _NEXT_PUBLIC_AUDIO_API_URL: https://se4ai-audio-api-1049366523390.europe-west1.run.app
+
+images:
+  - '${_IMAGE_NAME}'

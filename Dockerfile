@@ -20,6 +20,13 @@ COPY . .
 # Disable telemetry during build
 ENV NEXT_TELEMETRY_DISABLED 1
 
+# ✅ Accept build-time arguments for NEXT_PUBLIC_ variables
+# These must be declared here so Next.js bakes them into the client bundle
+ARG NEXT_PUBLIC_SCORE_API_URL
+ARG NEXT_PUBLIC_AUDIO_API_URL
+ENV NEXT_PUBLIC_SCORE_API_URL=$NEXT_PUBLIC_SCORE_API_URL
+ENV NEXT_PUBLIC_AUDIO_API_URL=$NEXT_PUBLIC_AUDIO_API_URL
+
 # Generate the production build
 RUN npm run build
 

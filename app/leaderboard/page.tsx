@@ -77,8 +77,9 @@ export default function Leaderboard() {
                         </div>
                     ) : scores.length === 0 ? (
                         <div className="text-center text-slate-400 mt-20 font-medium">
-                            No scores yet. Be the first to play!
+                            No scores yet. Be the first to play!!
                         </div>
+ 
                     ) : (
                         <div className="space-y-3 mt-4">
                             {scores.map((score, index) => (
@@ -101,3 +102,6 @@ export default function Leaderboard() {
         </div>
     );
 }
+
+
+// nothing hear i update code 
